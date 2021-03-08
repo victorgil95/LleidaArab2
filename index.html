@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en-us">
 
 <head>
@@ -39,17 +39,21 @@
 <body>
 	<div id="gameContainer">
 		<canvas id="unity-canvas"></canvas>
-		<script src="Build/UnityLoader.js"></script>
+		<script src="Build/{{{ LOADER_FILENAME }}}"></script>
 		<script>
 			createUnityInstance(document.querySelector("#unity-canvas"), {
-                dataUrl: "Build/LleidaArabBuild.data.unityweb",
-                frameworkUrl: "Build/LleidaArabBuild.wasm.framework.unityweb",
-                codeUrl: "Build/LleidaArabBuild.wasm.code.unityweb",
+				dataUrl: "Build/{{{ DATA_FILENAME }}}",
+				frameworkUrl: "Build/{{{ FRAMEWORK_FILENAME }}}",
+				codeUrl: "Build/{{{ CODE_FILENAME }}}",
+#if MEMORY_FILENAME
 				memoryUrl: "Build/{{{ MEMORY_FILENAME }}}",
+#endif
+#if SYMBOLS_FILENAME
 				symbolsUrl: "Build/{{{ SYMBOLS_FILENAME }}}",
+#endif
 				streamingAssetsUrl: "StreamingAssets",
 				companyName: "{{{ COMPANY_NAME }}}",
-				productName: "LleidaArab",
+				productName: "{{{ PRODUCT_NAME }}}",
 				productVersion: "{{{ PRODUCT_VERSION }}}",
 			}).then(function (instance) {
 				var canvas = instance.Module.canvas;
@@ -62,15 +66,15 @@
 						w = window.innerWidth;
 						h = window.innerHeight;
 
-						var r = 768 / 1024;
+						var r = {{{ HEIGHT }}} / {{{ WIDTH }}};
 
 						if (w * r > window.innerHeight) {
 							w = Math.min(w, Math.ceil(h / r));
 						}
 						h = Math.floor(w * r);
 					} else {
-						w = 1024;
-						h = 768;
+						w = {{{ WIDTH }}};
+						h = {{{ HEIGHT }}};
 					}
 
 					container.style.width = canvas.style.width = w + "px";
